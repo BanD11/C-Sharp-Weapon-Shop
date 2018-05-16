@@ -1,6 +1,6 @@
 ﻿namespace Intro
 {
-    partial class Form2
+    partial class LoginForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,72 +28,72 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.loginTextBox = new System.Windows.Forms.TextBox();
+            this.passwordTextBox = new System.Windows.Forms.TextBox();
+            this.enterLoginPasswordLabel = new System.Windows.Forms.Label();
+            this.okButton = new System.Windows.Forms.Button();
+            this.logOutButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // loginTextBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(92, 68);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "Login";
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.loginTextBox.Location = new System.Drawing.Point(92, 68);
+            this.loginTextBox.Name = "loginTextBox";
+            this.loginTextBox.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.loginTextBox.Size = new System.Drawing.Size(100, 20);
+            this.loginTextBox.TabIndex = 0;
+            this.loginTextBox.Text = "Login";
             // 
-            // textBox2
+            // passwordTextBox
             // 
-            this.textBox2.Location = new System.Drawing.Point(92, 118);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 1;
-            this.textBox2.Text = "Password";
+            this.passwordTextBox.Location = new System.Drawing.Point(92, 118);
+            this.passwordTextBox.Name = "passwordTextBox";
+            this.passwordTextBox.Size = new System.Drawing.Size(100, 20);
+            this.passwordTextBox.TabIndex = 1;
+            this.passwordTextBox.Text = "Password";
             // 
-            // label1
+            // enterLoginPasswordLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(76, 30);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(126, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Enter login and password";
+            this.enterLoginPasswordLabel.AutoSize = true;
+            this.enterLoginPasswordLabel.Location = new System.Drawing.Point(76, 30);
+            this.enterLoginPasswordLabel.Name = "enterLoginPasswordLabel";
+            this.enterLoginPasswordLabel.Size = new System.Drawing.Size(126, 13);
+            this.enterLoginPasswordLabel.TabIndex = 2;
+            this.enterLoginPasswordLabel.Text = "Enter login and password";
             // 
-            // button1
+            // okButton
             // 
-            this.button1.Location = new System.Drawing.Point(92, 159);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(100, 23);
-            this.button1.TabIndex = 3;
-            this.button1.Text = "&OK";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            this.button1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.button1_KeyDown);
+            this.okButton.Location = new System.Drawing.Point(92, 159);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(100, 23);
+            this.okButton.TabIndex = 3;
+            this.okButton.Text = "&OK";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // logOutButton
             // 
-            this.button2.Location = new System.Drawing.Point(92, 200);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(100, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "&Log Out";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.logOutButton.Location = new System.Drawing.Point(92, 200);
+            this.logOutButton.Name = "logOutButton";
+            this.logOutButton.Size = new System.Drawing.Size(100, 23);
+            this.logOutButton.TabIndex = 5;
+            this.logOutButton.Text = "&Log Out";
+            this.logOutButton.UseVisualStyleBackColor = true;
+            this.logOutButton.Click += new System.EventHandler(this.button2_Click);
             // 
-            // Form2
+            // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(284, 261);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.textBox1);
-            this.Name = "Form2";
+            this.Controls.Add(this.logOutButton);
+            this.Controls.Add(this.okButton);
+            this.Controls.Add(this.enterLoginPasswordLabel);
+            this.Controls.Add(this.passwordTextBox);
+            this.Controls.Add(this.loginTextBox);
+            this.Name = "LoginForm";
+            this.ShowIcon = false;
             this.Text = "Login window";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -102,10 +102,10 @@
 
         #endregion
 
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox loginTextBox;
+        private System.Windows.Forms.TextBox passwordTextBox;
+        private System.Windows.Forms.Label enterLoginPasswordLabel;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button logOutButton;
     }
 }

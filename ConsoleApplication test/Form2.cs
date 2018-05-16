@@ -10,60 +10,38 @@ using System.Windows.Forms;
 
 namespace Intro
 {
-    public partial class Form2 : Form
+    public partial class LoginForm : Form
     {
         public delegate void LoginDelegate();
         public event LoginDelegate loggedIn;
-        public void eventTest()
-        {
-            
-        }
         
-        public Form2()
+        public LoginForm()
         {
             InitializeComponent();
-            //label1.Text = "Enter login and password";
-            textBox2.UseSystemPasswordChar = true;
-            //button1.Text = "OK";
-            this.AcceptButton = button1;
-            
-            //this.CancelButton = this.Close;
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            passwordTextBox.UseSystemPasswordChar = true;
+            AcceptButton = okButton;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //LoginLogout login1 = new LoginLogout();
-            //Data data1 = new Data();
-            //data1.dataMain();
-            string lIn = textBox1.Text;
-            string pIn = textBox2.Text;
+            string lIn = loginTextBox.Text;
+            string pIn = passwordTextBox.Text;
             Global.login1.logIn1(lIn, pIn);
             if (Global.login1.isLoggedIn)
             {
-                label1.Text = "You logged in!";
+                enterLoginPasswordLabel.Text = "You logged in!";
                 loggedIn();
             }
             else
             {
-                label1.Text = "Not logged in.";
+                enterLoginPasswordLabel.Text = "Not logged in.";
             }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            //LoginLogout login1 = new LoginLogout();
             Global.login1.logOut();
-            label1.Text = "You logged out.";
-        }
-
-        private void button1_KeyDown(object sender, KeyEventArgs e)
-        {
-
+            enterLoginPasswordLabel.Text = "You logged out.";
         }
     }
 }

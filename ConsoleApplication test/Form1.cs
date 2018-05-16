@@ -7,246 +7,115 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySql.Data.MySqlClient;
 
 namespace Intro
 {
-
     public partial class Form1 : Form
     {
-        //extern public Data data1;
-        Form2 form2 = new Form2();
-
-        public delegate void BuyDelegate();//641, "sas");
-        public event BuyDelegate pressedYes;
-        
+        LoginForm loginForm = new LoginForm();
 
         public Form1()
         {
             InitializeComponent();
-            Global.data1.dataMain();
-            
-            InitWeaponTable(dataGridView1,Global.data1.PistolsList);
-            InitWeaponTable(dataGridView2, Global.data1.SmgsList);
-            InitWeaponTable(dataGridView3, Global.data1.RiflesList);
-            pressedYes += sas;
-            form2.loggedIn += loggedInText;
-            //System.Threading.Thread.Sleep(5000);
-            /*while (Global.login1.isLoggedIn == false)
-            {
-                System.Threading.Thread.Sleep(5000);//Timer.Start()//SpinWait.SpinUntil()//label2.Text = "You logged in as {Global.login1.currentUser}."; Thread.Sleep - 
-            }
-            label2.Text = "You logged in as {Global.login1.currentUser}.";*/
-            
+            Global.dataSQL1.TableToDGridView(pistolsDataGridView, "select * from pistols", "pistols");
+            Global.dataSQL1.TableToDGridView(smgsDataGridView, "select * from smgs","smgs");
+            loginForm.loggedIn += loggedInText;
+        }
+
+        public void updateOwnedData()
+        {
+            string idUser = Global.login1.idUser.ToString();
+            Global.dataSQL1.TableToDGridView(ownedDataGridView, "select * from ((select ownership.operationtime, ownership.guntype, pistols.* from ownership INNER JOIN pistols ON ownership.gunid = pistols.id where userid = " + idUser + @" and guntype = 'pistol') union all (select ownership.operationtime, ownership.guntype, smgs.* from ownership INNER JOIN smgs ON ownership.gunid = smgs.id where userid = " + idUser + @" and guntype = 'smg') )a order by operationtime; ", "owned");
+
         }
 
         public void loggedInText()
         {
-            label2.Text = ("You logged in as "+Global.login1.currentUser+".");
-            Account account1 = new Account();
-            account1.accountMain();
-            InitWeaponTable(dataGridView4, account1.ownedList);
-            button1.Show();
+            currentUserLabel.Text = ("You logged in as "+Global.login1.currentUser+".");
+            updateOwnedData();
+            buyButton.Show();
         }
-
-        public void InitWeaponTable(DataGridView targetGridView, List<string[]> targetList)
-        {
-            //Data data1 = new Data();
-            //Global.data1.dataMain();
-                            //List<string> raz = new List<string>();
-            //string[] countries = { "Бразилия", "Аргентина", "Чили", "Уругвай", "Колумбия" };
-            //raz.AddRange(countries);
-            //listBox1.Items.AddRange(data1.PistolsList.ToArray());
-            //listBox1.Items.Add(data1.LoginsList[1]);//(Convert.ChangeType(data1.LoginsList, typeof (object[])));
-
-
-
-            var column1 = new DataGridViewColumn();
-            column1.HeaderText = "ID"; //текст в шапке
-            column1.Width = 100; //ширина колонки
-            column1.ReadOnly = true; //значение в этой колонке нельзя править
-            column1.Name = "id"; //текстовое имя колонки, его можно использовать вместо обращений по индексу
-            column1.Frozen = true; //флаг, что данная колонка всегда отображается на своем месте
-            column1.CellTemplate = new DataGridViewTextBoxCell(); //тип нашей колонки
-
-            var column2 = new DataGridViewColumn();
-            column2.HeaderText = "Name";
-            column2.Name = "name";
-            column2.CellTemplate = new DataGridViewTextBoxCell();
-
-            var column3 = new DataGridViewColumn();
-            column3.HeaderText = "Productioner";
-            column3.Name = "whomadeit";
-            column3.CellTemplate = new DataGridViewTextBoxCell();
-            //column3.AutoSizeMode.
-
-            var column4 = new DataGridViewColumn();
-            column4.HeaderText = "Caliber";
-            column4.Name = "caliber";
-            column4.CellTemplate = new DataGridViewTextBoxCell();
-
-            var column5 = new DataGridViewColumn();
-            column5.HeaderText = "Country";
-            column5.Name = "country";
-            column5.CellTemplate = new DataGridViewTextBoxCell();
-
-            var column6 = new DataGridViewColumn();
-            column6.HeaderText = "Year";
-            column6.Name = "year";
-            column6.CellTemplate = new DataGridViewTextBoxCell();
-            
-            var column7 = new DataGridViewColumn();
-            column7.HeaderText = "Price";
-            column7.Name = "price";
-            column7.CellTemplate = new DataGridViewTextBoxCell();
-
-            //dataGridView1.CanSelect = false;
-
-            targetGridView.Columns.Add(column1);
-            targetGridView.Columns.Add(column2);
-            targetGridView.Columns.Add(column3);
-            targetGridView.Columns.Add(column4);
-            targetGridView.Columns.Add(column5);
-            targetGridView.Columns.Add(column6);
-            targetGridView.Columns.Add(column7);
-
-            targetGridView.AllowUserToAddRows = false; //запрешаем пользователю самому добавлять строки
-            targetGridView.MultiSelect = false;
-
-            for (int i = 0; i < targetList.Count; ++i)
-                {
-                //Добавляем строку, указывая значения колонок поочереди слева направо
-                    targetGridView.Rows.Add(targetList[i]);
-                }
-            
-        }
-
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //LoginLogout login1 = new LoginLogout();
-            /*if (Global.login1.idUser == -1) 
-            { 
-                label1.Text = "You not logged in, you can't buy things";
-                return;
-            }*/
-            //label1.Text = "123123123123";
-            //Data data1 = new Data();
-            //Global.data1.dataMain();
             preBuy();
-            
-
         }
-
-       
-        
 
         public void preBuy()
         {
-            //int currentID = Convert.ToInt32((Convert.ToString(dataGridView1.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-            //int price = Convert.ToInt32(Global.data1.PistolsList[currentID][6], 10);
-            int c = tabControl1.SelectedIndex;
-            int currentID=0;
-            int price=0;
-            switch (c)
-            {
-                case 1:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView1.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.PistolsList[currentID][6], 10);
-                    return;
-                case 2:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView2.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.SmgsList[currentID][6], 10);
-                    return;
-                case 3:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView3.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.RiflesList[currentID][6], 10);
-                    return;
-                default:
-                    break;
-            }
-            if (Convert.ToInt32(Global.data1.MoneysList[Global.login1.idUser]) - price >= 0)
-            {
-                button1.Hide();
-                button3.Show();
-                button4.Show();
-                label1.Text = ("This will cost you " + (Global.data1.PistolsList[currentID][6]) + ". Proceed?");
+            int currentTab = tabControl1.SelectedIndex;
+            string currentID;
+            int price = 0;
+            MySqlConnection connection = Global.connection;
+            string query = "";
+            MySqlCommand command = new MySqlCommand(query, connection);
+            connection.Open();
 
-                //string cat = "A";
-                //string item = ";" + cat + currentID;
-                //sas(price, item);
-                //Global.data1.Buing(/*int*/Global.login1.idUser, /*string*/ item, price);
-            }
-            else
+            currentID = pistolsDataGridView.SelectedRows[0].Cells[0].Value.ToString();
+            switch (currentTab)
+                {
+                    case 0:
+                        command.CommandText = "select price from pistols where id = "+ currentID;
+                        Global.gunType = "pistol";
+                        break;
+                    case 1:
+                        command.CommandText = "select price from smgs where id = " + currentID;
+                        Global.gunType = "smg";
+                        break;
+                    case 2:
+                        break;
+                default:
+                        break;
+                }
+            price = Convert.ToInt32(command.ExecuteScalar());
+            command.CommandText = "select umoney from users where uid = " + Global.login1.idUser;
+            if (Convert.ToInt32(command.ExecuteScalar()) - price >= 0)
             {
-                label1.Text = "You don't have enough money.";
+                buyButton.Hide();
+                    cancelBuyButton.Show();
+                    confirmBuyButton.Show();
+                    buingInfoLabel.Text = ("This will cost you " + price + ". Proceed?");
+                buingInfoLabel.Show();
+                Global.price = price;
+                Global.itemID = currentID;
             }
+                else
+                {
+                    buingInfoLabel.Text = "You don't have enough money.";
+                buingInfoLabel.Show();
+            }
+                connection.Close();
+                connection.Dispose();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
-            form2.Show();
+            loginForm.Show();
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
-           pressedYes();
+            goToBuy();
         }
 
-        void sas()//int price, string item)
+        void goToBuy()
         {
-            int c = tabControl1.SelectedIndex;
-            int currentID=1;
-            int price=0;
-            switch (c)
-            {
-                case 1:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView1.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.PistolsList[currentID][6], 10);
-                    break;
-                case 2:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView2.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.SmgsList[currentID][6], 10);
-                    break;
-                case 3:
-                    currentID = Convert.ToInt32((Convert.ToString(dataGridView3.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-                    price = Convert.ToInt32(Global.data1.RiflesList[currentID][6], 10);
-                    break;
-
-            }
-                
-
-            //string d = "dataGridView" + Convert.ToString(c);
-            //var z = "dataGridView" + c;
-            //DataGridView b = d as DataGridView;
-            //z = new DataGridView.Name();
-
-            //Type type = Type.GetType(z);
-            
-
-            //int newVar = (int)this.GetType().GetField("myVar").GetValue(this);
-
-            //int currentID = Convert.ToInt32((Convert.ToString(dataGridView1.SelectedRows[0]).Substring(24, (Convert.ToString(dataGridView1.SelectedRows[0])).Length - 26)), 10);
-            //int price = Convert.ToInt32(Global.data1.PistolsList[currentID][6], 10);
-            string cat = "A";
-            string item = ";" + cat + currentID;
-            Global.data1.Buing(/*int*/Global.login1.idUser, /*string*/ item, price);
-            label1.Text = "Done!";
-            button1.Show();
-            button3.Hide();
-            button4.Hide();
-
-            //int hui = preBuy.price;
+            Global.dataSQL1.Buing(Global.login1.idUser, Global.price, Global.itemID, Global.gunType);
+            buingInfoLabel.Show();
+            buingInfoLabel.Text = "Done!";
+            buyButton.Show();
+            cancelBuyButton.Hide();
+            confirmBuyButton.Hide();
+            updateOwnedData();
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            button1.Show();
-            button3.Hide();
-            button4.Hide();
-            label1.Text = "";
+            buyButton.Show();
+            cancelBuyButton.Hide();
+            confirmBuyButton.Hide();
+            buingInfoLabel.Hide();
         }
-
-
     }
 }
